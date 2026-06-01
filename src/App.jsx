@@ -11,6 +11,7 @@ import Placeholder from './pages/Placeholder.jsx'
 import AdminDashboard from './pages/admin/AdminDashboard.jsx'
 import StudentManagement from './pages/admin/StudentManagement.jsx'
 import TeacherManagement from './pages/admin/TeacherManagement.jsx'
+import SessionManagement from './pages/admin/SessionManagement.jsx'
 
 import TeacherDashboard from './pages/teacher/TeacherDashboard.jsx'
 import StudentDashboard from './pages/student/StudentDashboard.jsx'
@@ -40,7 +41,7 @@ export default function App() {
           <Route path="examinations" element={<Placeholder title="Examinations" icon="exam" phase="Phase 3" />} />
           <Route path="announcements" element={<Placeholder title="Announcements" icon="announce" phase="Phase 2" />} />
           <Route path="gallery" element={<Placeholder title="Gallery Management" icon="gallery" phase="Phase 2" />} />
-          <Route path="sessions" element={<Placeholder title="Academic Sessions" icon="session" phase="Phase 1 (next)" />} />
+          <Route path="sessions" element={<SessionManagement />} />
           <Route path="website" element={<Placeholder title="Website Content" icon="website" phase="Phase 4" />} />
           <Route path="timetable" element={<Placeholder title="Timetable Overview" icon="timetable" phase="Phase 2" />} />
           <Route path="messages" element={<Placeholder title="Messages" icon="messages" phase="Phase 4" />} />
