@@ -15,13 +15,17 @@ export const ROLE_HOME = {
   student: '/student/dashboard',
 }
 
-// Student record status values.
-// NOTE: the spec's students.status enum is active / graduated / transferred.
-// "Deactivate" in the admin UI sets a student to INACTIVE_STUDENT below. If your
-// DB enum does not include 'inactive', change this to 'transferred' (or alter
-// the enum) — it is intentionally a single constant so it is easy to swap.
-export const ACTIVE_STUDENT = 'active'
-export const INACTIVE_STUDENT = 'inactive'
+// Student record status values — matches the DB enum: active / graduated / transferred.
+export const STUDENT_STATUS = {
+  ACTIVE: 'active',
+  GRADUATED: 'graduated',
+  TRANSFERRED: 'transferred',
+}
+export const ACTIVE_STUDENT = STUDENT_STATUS.ACTIVE
+// "Deactivate" in the admin UI marks a student as having left the school.
+// Class 9 year-end graduation uses STUDENT_STATUS.GRADUATED (handled later in
+// the promotion flow); a mid-year deactivation is recorded as TRANSFERRED.
+export const DEACTIVATED_STUDENT = STUDENT_STATUS.TRANSFERRED
 
 // Teacher record status values (spec enum: active / inactive).
 export const ACTIVE_TEACHER = 'active'

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase.js'
-import { ACTIVE_STUDENT, INACTIVE_STUDENT } from '../../lib/constants.js'
+import { ACTIVE_STUDENT, DEACTIVATED_STUDENT } from '../../lib/constants.js'
 import PageHeader from '../../components/PageHeader.jsx'
 import Icon from '../../components/ui/Icon.jsx'
 import Alert from '../../components/ui/Alert.jsx'
@@ -124,7 +124,7 @@ export default function StudentManagement() {
     try {
       const { error: err } = await supabase
         .from('students')
-        .update({ status: INACTIVE_STUDENT })
+        .update({ status: DEACTIVATED_STUDENT })
         .eq('id', deactivateTarget.student.id)
       if (err) throw err
       toast.success('Student deactivated.')
@@ -280,7 +280,7 @@ export default function StudentManagement() {
         title="Deactivate student?"
         message={
           deactivateTarget
-            ? `${deactivateTarget.student.first_name} ${deactivateTarget.student.last_name} (${deactivateTarget.student.admission_no}) will be set to inactive and hidden from active lists. Their records are preserved and not deleted.`
+            ? `${deactivateTarget.student.first_name} ${deactivateTarget.student.last_name} (${deactivateTarget.student.admission_no}) will be marked as transferred and hidden from active lists. Their records are preserved and not deleted.`
             : ''
         }
         confirmLabel="Deactivate"

@@ -74,14 +74,13 @@ server-side). The `/api` folder is auto-deployed as serverless functions and
 - Editing and deactivating use the admin's own session (RLS grants admins full
   access); deactivation sets `status` and never deletes records.
 
-## ⚠️ One schema note to confirm
+## Status values
 
-The "Deactivate" action sets a student's `status` to **`inactive`**. The spec's
-`students.status` enum is listed as `active / graduated / transferred`. If your
-database enum does **not** include `inactive`, change `INACTIVE_STUDENT` in
-[`src/lib/constants.js`](src/lib/constants.js) to a valid value (e.g.
-`transferred`) or add `inactive` to the enum. Teachers use `active / inactive`,
-which matches the spec.
+Student `status` matches the DB constraint: **`active` / `graduated` / `transferred`**.
+The "Deactivate" action marks a student as **`transferred`** (left the school);
+Class 9 year-end graduation will use `graduated` in the promotion flow. These are
+defined in [`src/lib/constants.js`](src/lib/constants.js) (`STUDENT_STATUS`).
+Teachers use `active` / `inactive`.
 
 ## Project structure
 
