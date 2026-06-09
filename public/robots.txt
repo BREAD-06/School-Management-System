@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /$
+Allow: /gallery
+
+# Portal / app routes are not useful to crawlers.
+Disallow: /login
+Disallow: /admin
+Disallow: /teacher
+Disallow: /student
+Disallow: /api
+
+# NOTE: update this URL once the production domain is live.
+Sitemap: https://balajipublicschool.vercel.app/sitemap.xml

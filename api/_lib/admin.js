@@ -74,6 +74,28 @@ export async function getActiveSession(admin) {
   return data
 }
 
+// Generate the next sequential admission number in the form BJPS-0001.
+// Strategy: find the highest existing numeric suffix, increment, zero-pad to 4.
+// If no students exist, start at BJPS-0001.
+export async function nextAdmissionNo(admin) {
+  const { data, error } = await admin
+    .from('students')
+    .select('admission_no')
+    .ilike('admission_no', 'BJPS-%')
+  if (error) throw error
+
+  let max = 0
+  for (const row of data || []) {
+    const m = /BJPS-(\d+)/i.exec(row.admission_no || '')
+    if (m) {
+      const n = parseInt(m[1], 10)
+      if (Number.isFinite(n) && n > max) max = n
+    }
+  }
+  const next = max + 1
+  return `BJPS-${String(next).padStart(4, '0')}`
+}
+
 // Standard JSON error responder.
 export function fail(res, err) {
   const status = err?.status || 500

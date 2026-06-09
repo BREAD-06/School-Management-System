@@ -1,0 +1,17 @@
+[ {
+   "description": "",
+   "devtoolsFrontendUrl": "https://aka.ms/docs-landing-page/serve_rev/@9df8cc82dba17fae8e28f36090e5792214d74eeb/inspector.html?ws=localhost:9222/devtools/page/4906874027A99F912919DD8E5E3A6924",
+   "id": "4906874027A99F912919DD8E5E3A6924",
+   "title": "Doubtnut Search",
+   "type": "background_page",
+   "url": "chrome-extension://icgipifjfgikecdbdakkfpchnjbhmdnm/_generated_background_page.html",
+   "webSocketDebuggerUrl": "ws://localhost:9222/devtools/page/4906874027A99F912919DD8E5E3A6924"
+}, {
+   "description": "",
+   "devtoolsFrontendUrl": "https://aka.ms/docs-landing-page/serve_rev/@9df8cc82dba17fae8e28f36090e5792214d74eeb/inspector.html?ws=localhost:9222/devtools/page/1E9FC371C2CFB7BC4AFAEF9F4FE47685",
+   "id": "1E9FC371C2CFB7BC4AFAEF9F4FE47685",
+   "title": "School Management System",
+   "type": "page",
+   "url": "http://localhost:5175/login",
+   "webSocketDebuggerUrl": "ws://localhost:9222/devtools/page/1E9FC371C2CFB7BC4AFAEF9F4FE47685"
+} ]

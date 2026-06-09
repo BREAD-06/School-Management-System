@@ -140,8 +140,8 @@ export default function TeacherFormModal({ open, onClose, onSaved, mode, record 
         {!isEdit && (
           <p className="rounded-lg bg-royal-50 px-3 py-2 text-xs text-royal-600">
             A login will be created automatically — email{' '}
-            <strong>{(form.employeeId || 'employeeid').toLowerCase()}@school.com</strong> with the
-            employee ID as the password.
+            <strong>{(form.employeeId || 'employeeid').toLowerCase()}@bjps.com</strong> with the
+            employee ID as the default password.
           </p>
         )}
 

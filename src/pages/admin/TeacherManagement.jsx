@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { supabase } from '../../lib/supabase.js'
+import { resetPassword } from '../../lib/api.js'
 import { ACTIVE_TEACHER, INACTIVE_TEACHER } from '../../lib/constants.js'
 import PageHeader from '../../components/PageHeader.jsx'
 import Icon from '../../components/ui/Icon.jsx'
@@ -24,13 +25,16 @@ export default function TeacherManagement() {
   const [deactivateTarget, setDeactivateTarget] = useState(null)
   const [deactivating, setDeactivating] = useState(false)
 
+  const [resetTarget, setResetTarget] = useState(null)
+  const [resetting, setResetting] = useState(false)
+
   const refresh = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
       const { data, error: err } = await supabase
         .from('teachers')
-        .select('id, employee_id, name, phone, email, designation, joining_date, status')
+        .select('id, user_id, employee_id, name, phone, email, designation, joining_date, status')
         .eq('status', ACTIVE_TEACHER)
         .order('name')
       if (err) throw err
@@ -71,6 +75,25 @@ export default function TeacherManagement() {
     setFormOpen(false)
     toast.success(message)
     await refresh()
+  }
+
+  const confirmReset = async () => {
+    if (!resetTarget) return
+    if (!resetTarget.user_id) {
+      toast.error('This teacher has no linked login account to reset.')
+      setResetTarget(null)
+      return
+    }
+    setResetting(true)
+    try {
+      await resetPassword(resetTarget.user_id, resetTarget.employee_id)
+      toast.success(`Password reset to ${resetTarget.employee_id}.`)
+      setResetTarget(null)
+    } catch (err) {
+      toast.error(err.message || 'Failed to reset password.')
+    } finally {
+      setResetting(false)
+    }
   }
 
   const confirmDeactivate = async () => {
@@ -170,6 +193,12 @@ export default function TeacherManagement() {
                           Edit
                         </button>
                         <button
+                          className="rounded-md px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-50"
+                          onClick={() => setResetTarget(t)}
+                        >
+                          Reset Password
+                        </button>
+                        <button
                           className="rounded-md px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
                           onClick={() => setDeactivateTarget(t)}
                         >
@@ -197,6 +226,21 @@ export default function TeacherManagement() {
         onSaved={handleSaved}
         mode={formMode}
         record={editRecord}
+      />
+
+      <ConfirmDialog
+        open={!!resetTarget}
+        onClose={() => setResetTarget(null)}
+        onConfirm={confirmReset}
+        loading={resetting}
+        danger={false}
+        title="Reset password?"
+        message={
+          resetTarget
+            ? `Reset password for ${resetTarget.name} to their default password (${resetTarget.employee_id})? They will be asked to set a new password on next login.`
+            : ''
+        }
+        confirmLabel="Reset Password"
       />
 
       <ConfirmDialog

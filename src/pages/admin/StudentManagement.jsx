@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase.js'
+import { resetPassword } from '../../lib/api.js'
+import { deleteStorageFile } from '../../lib/fileUtils.js'
 import { ACTIVE_STUDENT, DEACTIVATED_STUDENT } from '../../lib/constants.js'
 import PageHeader from '../../components/PageHeader.jsx'
 import Icon from '../../components/ui/Icon.jsx'
@@ -8,6 +10,7 @@ import Alert from '../../components/ui/Alert.jsx'
 import Spinner, { PageLoader } from '../../components/ui/Spinner.jsx'
 import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx'
 import StudentFormModal from '../../components/admin/StudentFormModal.jsx'
+import ImportStudentsModal from '../../components/admin/ImportStudentsModal.jsx'
 import { useToast } from '../../components/ui/Toast.jsx'
 
 export default function StudentManagement() {
@@ -25,9 +28,13 @@ export default function StudentManagement() {
   const [formOpen, setFormOpen] = useState(false)
   const [formMode, setFormMode] = useState('add')
   const [editRecord, setEditRecord] = useState(null)
+  const [importOpen, setImportOpen] = useState(false)
 
   const [deactivateTarget, setDeactivateTarget] = useState(null)
   const [deactivating, setDeactivating] = useState(false)
+
+  const [resetTarget, setResetTarget] = useState(null)
+  const [resetting, setResetting] = useState(false)
 
   // Load classes + active session once.
   const loadMeta = useCallback(async () => {
@@ -57,7 +64,8 @@ export default function StudentManagement() {
         `id, roll_no, class_id, status,
          student:students!inner (
            id, user_id, admission_no, first_name, last_name, dob, gender,
-           father_name, mother_name, parent_phone, address, admission_date, status
+           father_name, mother_name, parent_phone, address, admission_date, status,
+           profile_photo_url
          ),
          class:classes ( id, class_name, sort_order )`,
       )
@@ -118,15 +126,37 @@ export default function StudentManagement() {
     await refresh()
   }
 
+  const confirmReset = async () => {
+    if (!resetTarget) return
+    const { user_id, admission_no } = resetTarget.student
+    if (!user_id) {
+      toast.error('This student has no linked login account to reset.')
+      setResetTarget(null)
+      return
+    }
+    setResetting(true)
+    try {
+      await resetPassword(user_id, admission_no)
+      toast.success(`Password reset to ${admission_no}.`)
+      setResetTarget(null)
+    } catch (err) {
+      toast.error(err.message || 'Failed to reset password.')
+    } finally {
+      setResetting(false)
+    }
+  }
+
   const confirmDeactivate = async () => {
     if (!deactivateTarget) return
     setDeactivating(true)
     try {
       const { error: err } = await supabase
         .from('students')
-        .update({ status: DEACTIVATED_STUDENT })
+        .update({ status: DEACTIVATED_STUDENT, profile_photo_url: null })
         .eq('id', deactivateTarget.student.id)
       if (err) throw err
+      // Free the storage object — the record is preserved but the photo is removed.
+      await deleteStorageFile('profile-photos', deactivateTarget.student.profile_photo_url)
       toast.success('Student deactivated.')
       setDeactivateTarget(null)
       await refresh()
@@ -143,9 +173,14 @@ export default function StudentManagement() {
         title="Student Management"
         subtitle={session ? `Active session: ${session.session_name}` : undefined}
         actions={
-          <button className="btn-primary" onClick={openAdd} disabled={!session}>
-            <Icon name="students" /> Add Student
-          </button>
+          <>
+            <button className="btn-outline" onClick={() => setImportOpen(true)} disabled={!session}>
+              <Icon name="materials" /> Import Students
+            </button>
+            <button className="btn-primary" onClick={openAdd} disabled={!session}>
+              <Icon name="students" /> Add Student
+            </button>
+          </>
         }
       />
 
@@ -242,6 +277,12 @@ export default function StudentManagement() {
                           Edit
                         </button>
                         <button
+                          className="rounded-md px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-50"
+                          onClick={() => setResetTarget(r)}
+                        >
+                          Reset Password
+                        </button>
+                        <button
                           className="rounded-md px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
                           onClick={() => setDeactivateTarget(r)}
                         >
@@ -270,6 +311,29 @@ export default function StudentManagement() {
         classes={classes}
         mode={formMode}
         record={editRecord}
+      />
+
+      <ImportStudentsModal
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onDone={async () => { toast.success('Import finished.'); await refresh() }}
+        classes={classes}
+        session={session}
+      />
+
+      <ConfirmDialog
+        open={!!resetTarget}
+        onClose={() => setResetTarget(null)}
+        onConfirm={confirmReset}
+        loading={resetting}
+        danger={false}
+        title="Reset password?"
+        message={
+          resetTarget
+            ? `Reset password for ${resetTarget.student.first_name} ${resetTarget.student.last_name} to their default password (${resetTarget.student.admission_no})? They will be asked to set a new password on next login.`
+            : ''
+        }
+        confirmLabel="Reset Password"
       />
 
       <ConfirmDialog

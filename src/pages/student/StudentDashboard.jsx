@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext.jsx'
+import { useAuth } from '../../context/useAuth.js'
 import PageHeader from '../../components/PageHeader.jsx'
 import Icon from '../../components/ui/Icon.jsx'
 
 const QUICK = [
   { label: 'My Profile', to: '/student/profile', icon: 'profile' },
   { label: 'Homework', to: '/student/homework', icon: 'homework' },
+  { label: 'View Results', to: '/student/marks', icon: 'marks' },
   { label: 'Timetable', to: '/student/timetable', icon: 'timetable' },
   { label: 'Notifications', to: '/student/notifications', icon: 'notifications' },
 ]

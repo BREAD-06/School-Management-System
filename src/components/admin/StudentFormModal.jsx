@@ -11,7 +11,6 @@ const today = () => new Date().toISOString().slice(0, 10)
 const emptyForm = () => ({
   firstName: '',
   lastName: '',
-  admissionNo: '',
   dob: '',
   gender: '',
   fatherName: '',
@@ -38,7 +37,6 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
       setForm({
         firstName: s.first_name || '',
         lastName: s.last_name || '',
-        admissionNo: s.admission_no || '',
         dob: s.dob || '',
         gender: s.gender || '',
         fatherName: s.father_name || '',
@@ -59,7 +57,6 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
   const validate = () => {
     if (!form.firstName.trim()) return 'First name is required.'
     if (!form.lastName.trim()) return 'Last name is required.'
-    if (!form.admissionNo.trim()) return 'Admission number is required.'
     if (!form.parentPhone.trim()) return 'Parent phone is required.'
     if (!String(form.classId).trim()) return 'Please select a class.'
     if (!/^[0-9+\-\s]{7,15}$/.test(form.parentPhone.trim()))
@@ -140,23 +137,20 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
             <input className="input" value={form.lastName} onChange={set('lastName')} disabled={saving} />
           </div>
 
-          <div>
-            <label className="label">
-              Admission Number <span className="text-red-500">*</span>
-            </label>
-            <input
-              className="input disabled:bg-slate-100"
-              value={form.admissionNo}
-              onChange={set('admissionNo')}
-              disabled={saving || isEdit}
-              placeholder="e.g. SCH001"
-            />
-            {isEdit && (
+          {isEdit && (
+            <div>
+              <label className="label">Admission Number</label>
+              <input
+                className="input bg-slate-100"
+                value={record?.student?.admission_no || '—'}
+                disabled
+                readOnly
+              />
               <p className="mt-1 text-xs text-slate-400">
-                Admission number is the login ID and cannot be changed.
+                Auto-generated login ID — cannot be changed.
               </p>
-            )}
-          </div>
+            </div>
+          )}
           <div>
             <label className="label">Date of Birth</label>
             <input type="date" className="input" value={form.dob} onChange={set('dob')} disabled={saving} />
@@ -226,9 +220,9 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
 
         {!isEdit && (
           <p className="rounded-lg bg-royal-50 px-3 py-2 text-xs text-royal-600">
-            A login will be created automatically — email{' '}
-            <strong>{(form.admissionNo || 'admissionno').toLowerCase()}@school.com</strong> with the
-            admission number as the password.
+            An admission number (e.g. <strong>BJPS-0001</strong>) will be generated automatically. A
+            login is created from it — email <strong>bjps-0001@bjps.com</strong> with the admission
+            number as the default password.
           </p>
         )}
 

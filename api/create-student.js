@@ -1,6 +1,6 @@
-import { getAdminClient, requireAdmin, getActiveSession, fail } from './_lib/admin.js'
+import { getAdminClient, requireAdmin, getActiveSession, nextAdmissionNo, fail } from './_lib/admin.js'
 
-const EMAIL_DOMAIN = '@school.com'
+const EMAIL_DOMAIN = '@bjps.com'
 const nn = (v) => {
   const s = typeof v === 'string' ? v.trim() : v
   return s === '' || s === undefined ? null : s
@@ -22,15 +22,14 @@ export default async function handler(req, res) {
     const b = req.body || {}
     const firstName = nn(b.firstName)
     const lastName = nn(b.lastName)
-    const admissionNo = nn(b.admissionNo)
     const parentPhone = nn(b.parentPhone)
     const classId = nn(b.classId)
 
     // Required-field validation (mirrors the client form).
+    // Admission number is auto-generated server-side — never supplied by the client.
     const missing = []
     if (!firstName) missing.push('First Name')
     if (!lastName) missing.push('Last Name')
-    if (!admissionNo) missing.push('Admission Number')
     if (!parentPhone) missing.push('Parent Phone')
     if (!classId) missing.push('Class')
     if (missing.length) {
@@ -40,17 +39,8 @@ export default async function handler(req, res) {
     // Must have an active session to enroll into.
     const session = await getActiveSession(admin)
 
-    // Guard against duplicate admission numbers up front for a clean message.
-    const { data: existing } = await admin
-      .from('students')
-      .select('id')
-      .eq('admission_no', admissionNo)
-      .maybeSingle()
-    if (existing) {
-      return res
-        .status(409)
-        .json({ error: `A student with admission number "${admissionNo}" already exists.` })
-    }
+    // Auto-generate the next sequential admission number (BJPS-0001, …).
+    const admissionNo = await nextAdmissionNo(admin)
 
     const email = `${admissionNo}${EMAIL_DOMAIN}`.toLowerCase()
     const password = admissionNo
@@ -114,6 +104,7 @@ export default async function handler(req, res) {
       success: true,
       student_id: insertedStudentId,
       user_id: createdUserId,
+      admission_no: admissionNo,
       email,
       session: session.session_name,
     })

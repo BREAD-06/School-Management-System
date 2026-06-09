@@ -7,6 +7,7 @@ import { PageLoader } from '../../components/ui/Spinner.jsx'
 import Spinner from '../../components/ui/Spinner.jsx'
 import ConfirmDialog from '../../components/ui/ConfirmDialog.jsx'
 import SessionFormModal from '../../components/admin/SessionFormModal.jsx'
+import PromotionModal from '../../components/admin/PromotionModal.jsx'
 import { useToast } from '../../components/ui/Toast.jsx'
 
 // Format "2025-04-01" → "1 Apr 2025"
@@ -30,6 +31,8 @@ export default function SessionManagement() {
 
   const [activateTarget, setActivateTarget] = useState(null)
   const [activating, setActivating] = useState(false)
+
+  const [promoteTarget, setPromoteTarget] = useState(null)
 
   const refresh = useCallback(async () => {
     setLoading(true)
@@ -184,12 +187,22 @@ export default function SessionManagement() {
                       <td className="px-5 py-3.5">
                         <div className="flex justify-end gap-2">
                           {!isActive && (
-                            <button
-                              className="rounded-md bg-navy px-3 py-1 text-xs font-semibold text-white hover:bg-navy-800 transition"
-                              onClick={() => setActivateTarget(s)}
-                            >
-                              Set Active
-                            </button>
+                            <>
+                              <button
+                                className="rounded-md bg-navy px-3 py-1 text-xs font-semibold text-white hover:bg-navy-800 transition"
+                                onClick={() => setActivateTarget(s)}
+                              >
+                                Set Active
+                              </button>
+                              <button
+                                className="rounded-md border border-royal px-3 py-1 text-xs font-semibold text-royal hover:bg-royal-50 transition disabled:opacity-50"
+                                onClick={() => setPromoteTarget(s)}
+                                disabled={!activeSession}
+                                title={activeSession ? 'Promote active-session students into this session' : 'Activate a session first'}
+                              >
+                                Promote Students
+                              </button>
+                            </>
                           )}
                           <button
                             className="rounded-md px-2.5 py-1 text-xs font-medium text-royal hover:bg-royal-50"
@@ -244,6 +257,15 @@ export default function SessionManagement() {
         onSaved={handleSaved}
         mode={formMode}
         record={editRecord}
+      />
+
+      {/* Promotion */}
+      <PromotionModal
+        open={!!promoteTarget}
+        onClose={() => setPromoteTarget(null)}
+        targetSession={promoteTarget}
+        activeSession={activeSession}
+        onDone={async () => { toast.success('Promotion complete.'); await refresh() }}
       />
     </div>
   )

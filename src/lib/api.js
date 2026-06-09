@@ -32,3 +32,16 @@ async function postApi(path, payload) {
 
 export const createStudent = (payload) => postApi('create-student', payload)
 export const createTeacher = (payload) => postApi('create-teacher', payload)
+// Resets a user's password to their default (admission no / employee id).
+export const resetPassword = (userId, newPassword) =>
+  postApi('reset-password', { userId, newPassword })
+
+// Internal messaging (action-based endpoint).
+const messages = (action, payload) => postApi('messages', { action, ...(payload || {}) })
+export const messagesApi = {
+  directory: () => messages('directory'),
+  conversations: () => messages('conversations'),
+  thread: (otherId) => messages('thread', { otherId }),
+  send: (receiverId, content, attachmentUrl) => messages('send', { receiverId, content, attachmentUrl }),
+  markRead: (otherId) => messages('markRead', { otherId }),
+}

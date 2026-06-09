@@ -1,6 +1,6 @@
 import { getAdminClient, requireAdmin, fail } from './_lib/admin.js'
 
-const EMAIL_DOMAIN = '@school.com'
+const EMAIL_DOMAIN = '@bjps.com'
 const nn = (v) => {
   const s = typeof v === 'string' ? v.trim() : v
   return s === '' || s === undefined ? null : s

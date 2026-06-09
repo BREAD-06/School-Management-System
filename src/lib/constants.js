@@ -1,7 +1,21 @@
 // Central place for school-wide constants and labels.
 
-export const SCHOOL_NAME = 'Greenwood Public School'
-export const EMAIL_DOMAIN = '@school.com'
+export const SCHOOL_NAME = import.meta.env.VITE_SCHOOL_NAME || 'Bala Ji Public School'
+export const EMAIL_DOMAIN = '@bjps.com'
+
+// Exam types used by the teacher Marks module.
+// `value` MUST match the DB check constraint; `label` is what the teacher sees.
+export const EXAM_TYPES = [
+  { value: 'unit_test', label: 'Unit Test' },
+  { value: 'mid_term', label: 'Mid Term Exam' },
+  { value: 'final_exam', label: 'Final Exam' },
+]
+
+// Attendance status values.
+export const ATTENDANCE_STATUS = { PRESENT: 'present', ABSENT: 'absent' }
+
+// Fee status values.
+export const FEE_STATUS = { PAID: 'paid', UNPAID: 'unpaid' }
 
 export const ROLES = {
   ADMIN: 'admin',

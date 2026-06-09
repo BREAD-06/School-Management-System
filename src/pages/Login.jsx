@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth } from '../context/useAuth.js'
 import { ROLE_HOME, SCHOOL_NAME } from '../lib/constants.js'
 import Alert from '../components/ui/Alert.jsx'
 import Spinner from '../components/ui/Spinner.jsx'
@@ -47,9 +47,11 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-navy via-navy-800 to-royal-600 px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 text-2xl font-bold text-white ring-1 ring-white/20">
-            {SCHOOL_NAME.charAt(0)}
-          </div>
+          <img
+            src="/bjps-logo.png"
+            alt="Bala Ji Public School"
+            className="mx-auto mb-4 h-20 w-auto rounded-2xl bg-white/10 p-2 ring-1 ring-white/20"
+          />
           <h1 className="text-2xl font-bold text-white">{SCHOOL_NAME}</h1>
           <p className="mt-1 text-sm text-white/70">Management System Portal</p>
         </div>
@@ -72,7 +74,7 @@ export default function Login() {
                 type="email"
                 autoComplete="username"
                 className="input"
-                placeholder="you@school.com"
+                placeholder="bjps-0001@bjps.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
@@ -108,6 +110,10 @@ export default function Login() {
             <button type="submit" className="btn-primary w-full" disabled={loading}>
               {loading ? <Spinner label="Signing in…" /> : 'Login'}
             </button>
+
+            <p className="text-center text-xs text-slate-500">
+              Forgot your password? Please contact the school administrator.
+            </p>
           </form>
         </div>
 

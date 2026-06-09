@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth } from '../context/useAuth.js'
 import { SCHOOL_NAME } from '../lib/constants.js'
 import Icon from './ui/Icon.jsx'
 import ConfirmDialog from './ui/ConfirmDialog.jsx'
@@ -16,15 +16,13 @@ export default function DashboardLayout({ portalLabel, navItems }) {
     setLoggingOut(true)
     await signOut()
     setLoggingOut(false)
-    navigate('/login', { replace: true })
+    navigate('/', { replace: true })
   }
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-lg font-bold text-white">
-          {SCHOOL_NAME.charAt(0)}
-        </div>
+        <img src="/bjps-logo.png" alt="Bala Ji Public School" className="h-12 w-auto shrink-0 rounded-lg bg-white/10 p-1" />
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-white">{SCHOOL_NAME}</p>
           <p className="truncate text-xs text-white/60">{portalLabel}</p>
@@ -123,7 +121,7 @@ export default function DashboardLayout({ portalLabel, navItems }) {
         onConfirm={handleLogout}
         loading={loggingOut}
         title="Log out?"
-        message="You will be returned to the login page."
+        message="You will be returned to the home page."
         confirmLabel="Log out"
         danger={false}
       />

@@ -16,6 +16,9 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: true,
+    // Persist the session in localStorage so it survives page reloads and
+    // browser restarts (cleared only on explicit sign-out or token expiry).
+    storage: window.localStorage,
   },
 })
