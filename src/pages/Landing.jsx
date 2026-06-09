@@ -60,8 +60,8 @@ export default function Landing() {
         <About about={content.about} image={images.about} />
         <Principal principal={content.principal} image={images.principal} />
         <LandingGallery photos={photos} />
-        <WhyChooseUs />
         <LandingToppers toppers={toppers} />
+        <WhyChooseUs />
         <Facilities items={images.facilities} />
         <Achievements />
         <AnnouncementsSection announcements={announcements} />
