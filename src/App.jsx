@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import { ToastProvider } from './components/ui/Toast.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import DashboardLayout from './components/DashboardLayout.jsx'
@@ -43,6 +44,7 @@ import StudentResults from './pages/student/Marks.jsx'
 export default function App() {
   return (
     <ToastProvider>
+      <Analytics />
       <Routes>
         <Route path="/" element={<RootRedirect />} />
         <Route path="/login" element={<Login />} />
