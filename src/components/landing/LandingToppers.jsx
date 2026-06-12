@@ -5,9 +5,9 @@ import LandingIcon from './LandingIcon.jsx'
 // Placeholder achievers shown before any real toppers are added in the admin
 // portal. Kept generic so the section never looks empty for visitors.
 const PLACEHOLDERS = [
-  { id: 'p1', student_name: 'Student Name', class_name: 'Class 9', percentage: 97, session_name: 'Coming Soon', photo_url: null },
-  { id: 'p2', student_name: 'Student Name', class_name: 'Class 9', percentage: 95, session_name: 'Coming Soon', photo_url: null },
-  { id: 'p3', student_name: 'Student Name', class_name: 'Class 9', percentage: 93, session_name: 'Coming Soon', photo_url: null },
+  { id: 'p1', student_name: 'Student Name', class_name: 'Class 10', percentage: 97, session_name: 'Coming Soon', photo_url: null },
+  { id: 'p2', student_name: 'Student Name', class_name: 'Class 10', percentage: 95, session_name: 'Coming Soon', photo_url: null },
+  { id: 'p3', student_name: 'Student Name', class_name: 'Class 10', percentage: 93, session_name: 'Coming Soon', photo_url: null },
 ]
 
 // Gold / silver / bronze styling by rank position (within the filtered list).

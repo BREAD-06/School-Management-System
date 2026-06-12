@@ -37,7 +37,7 @@ export const STUDENT_STATUS = {
 }
 export const ACTIVE_STUDENT = STUDENT_STATUS.ACTIVE
 // "Deactivate" in the admin UI marks a student as having left the school.
-// Class 9 year-end graduation uses STUDENT_STATUS.GRADUATED (handled later in
+// Class 10 year-end graduation uses STUDENT_STATUS.GRADUATED (handled later in
 // the promotion flow); a mid-year deactivation is recorded as TRANSFERRED.
 export const DEACTIVATED_STUDENT = STUDENT_STATUS.TRANSFERRED
 

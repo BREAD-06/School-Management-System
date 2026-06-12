@@ -56,10 +56,9 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
 
   const validate = () => {
     if (!form.firstName.trim()) return 'First name is required.'
-    if (!form.lastName.trim()) return 'Last name is required.'
-    if (!form.parentPhone.trim()) return 'Parent phone is required.'
     if (!String(form.classId).trim()) return 'Please select a class.'
-    if (!/^[0-9+\-\s]{7,15}$/.test(form.parentPhone.trim()))
+    // Phone is optional, but if provided it must look valid.
+    if (form.parentPhone.trim() && !/^[0-9+\-\s]{7,15}$/.test(form.parentPhone.trim()))
       return 'Please enter a valid parent phone number.'
     return ''
   }
@@ -85,7 +84,7 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
             gender: form.gender || null,
             father_name: form.fatherName.trim() || null,
             mother_name: form.motherName.trim() || null,
-            parent_phone: form.parentPhone.trim(),
+            parent_phone: form.parentPhone.trim() || null,
             address: form.address.trim() || null,
             admission_date: form.admissionDate || null,
           })
@@ -131,9 +130,7 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
             <input className="input" value={form.firstName} onChange={set('firstName')} disabled={saving} />
           </div>
           <div>
-            <label className="label">
-              Last Name <span className="text-red-500">*</span>
-            </label>
+            <label className="label">Last Name</label>
             <input className="input" value={form.lastName} onChange={set('lastName')} disabled={saving} />
           </div>
 
@@ -168,9 +165,7 @@ export default function StudentFormModal({ open, onClose, onSaved, classes, mode
             </select>
           </div>
           <div>
-            <label className="label">
-              Parent Phone <span className="text-red-500">*</span>
-            </label>
+            <label className="label">Parent Phone</label>
             <input
               className="input"
               value={form.parentPhone}

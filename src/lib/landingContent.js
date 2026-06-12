@@ -17,7 +17,7 @@ export const SCHOOL = {
   phone: '9017890654',
   email: 'kuldeep.shastri654@gmail.com',
   officeHours: 'Mon–Sat, 8:00 AM – 2:00 PM',
-  classesRange: 'Nursery to Class 9',
+  classesRange: 'Nursery to Class 10',
   // Used by the WhatsApp button and the Google Maps embed.
   whatsapp: '919017890654',
   mapQuery: 'Jathlana, Yamunanagar, Haryana 135133',
@@ -41,14 +41,14 @@ export const DEFAULT_CONTENT = {
   hero: {
     headline: 'Nurturing Minds, Building Futures',
     subheadline:
-      'Providing quality education from Nursery to Class 9 in the heart of Haryana.',
+      'Providing quality education from Nursery to Class 10 in the heart of Haryana.',
     motto: 'Nurturing Minds, Building Futures',
   },
   about: {
     heading: 'Welcome to Bala Ji Public School',
     body:
       'Bala Ji Public School, located in Jathlana, Yamunanagar, is dedicated to ' +
-      'providing holistic, value-based education from Nursery to Class 9. For ' +
+      'providing holistic, value-based education from Nursery to Class 10. For ' +
       'years we have nurtured curious, confident and compassionate learners in a ' +
       'safe and supportive environment.\n\n' +
       'Our experienced educators combine a strong academic foundation with ' +

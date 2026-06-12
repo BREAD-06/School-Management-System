@@ -54,7 +54,7 @@ export default function ImportStudentsModal({ open, onClose, onDone, classes, se
       const { headers, records } = parseCsvToObjects(text)
 
       const missingCols = TEMPLATE_HEADERS.filter(
-        (h) => !headers.includes(h) && ['first_name', 'last_name', 'class_name', 'parent_phone'].includes(h),
+        (h) => !headers.includes(h) && ['first_name', 'class_name'].includes(h),
       )
       if (missingCols.length) {
         setError(`CSV is missing required columns: ${missingCols.join(', ')}. Download the template to see the correct format.`)
@@ -68,10 +68,9 @@ export default function ImportStudentsModal({ open, onClose, onDone, classes, se
       const validated = records.map((data) => {
         const errors = []
         if (!data.first_name) errors.push('Missing first name')
-        if (!data.last_name) errors.push('Missing last name')
         if (!data.class_name) errors.push('Missing class')
-        if (!data.parent_phone) errors.push('Missing parent phone')
-        else if (!phoneOk(data.parent_phone)) errors.push('Invalid phone')
+        // Last name and parent phone are optional; only check phone format if given.
+        if (data.parent_phone && !phoneOk(data.parent_phone)) errors.push('Invalid phone')
 
         let classId = null
         if (data.class_name) {
@@ -155,7 +154,7 @@ export default function ImportStudentsModal({ open, onClose, onDone, classes, se
           </div>
 
           <p className="text-xs text-slate-400">
-            Required columns: first_name, last_name, class_name, parent_phone. Optional: father_name,
+            Required columns: first_name, class_name. Optional: last_name, parent_phone, father_name,
             mother_name, gender, dob (YYYY-MM-DD), address, roll_no.
           </p>
         </div>

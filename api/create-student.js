@@ -27,10 +27,11 @@ export default async function handler(req, res) {
 
     // Required-field validation (mirrors the client form).
     // Admission number is auto-generated server-side — never supplied by the client.
+    // Only First Name and Class are required. Last Name and Parent Phone are
+    // optional (last_name is stored as '' since the column is NOT NULL; phone
+    // is stored as NULL when blank).
     const missing = []
     if (!firstName) missing.push('First Name')
-    if (!lastName) missing.push('Last Name')
-    if (!parentPhone) missing.push('Parent Phone')
     if (!classId) missing.push('Class')
     if (missing.length) {
       return res.status(400).json({ error: `Missing required fields: ${missing.join(', ')}` })
@@ -69,7 +70,7 @@ export default async function handler(req, res) {
         user_id: createdUserId,
         admission_no: admissionNo,
         first_name: firstName,
-        last_name: lastName,
+        last_name: lastName || '', // column is NOT NULL; store empty when omitted
         dob: nn(b.dob),
         gender: nn(b.gender),
         father_name: nn(b.fatherName),

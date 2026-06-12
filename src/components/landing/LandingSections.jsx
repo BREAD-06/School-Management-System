@@ -221,7 +221,7 @@ export function Achievements() {
 export function AnnouncementsSection({ announcements }) {
   const items = announcements && announcements.length > 0 ? announcements : null
   const placeholders = [
-    { id: 'p1', title: 'Admissions Open for the New Session', description: 'Enrolment for Nursery to Class 9 is now open. Visit the school office to collect a form.', created_at: null },
+    { id: 'p1', title: 'Admissions Open for the New Session', description: 'Enrolment for Nursery to Class 10 is now open. Visit the school office to collect a form.', created_at: null },
     { id: 'p2', title: 'Annual Day Celebration', description: 'Our students are preparing for a vibrant Annual Day. Stay tuned for the schedule.', created_at: null },
     { id: 'p3', title: 'Parent–Teacher Meeting', description: 'A PTM will be held to discuss student progress. Parents are requested to attend.', created_at: null },
   ]

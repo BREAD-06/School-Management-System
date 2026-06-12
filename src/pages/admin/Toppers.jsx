@@ -209,7 +209,7 @@ export default function AdminToppers() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="label">Class <span className="text-red-500">*</span></label>
-              <input className="input" value={form.className} onChange={set('className')} disabled={saving} placeholder="e.g. Class 9" />
+              <input className="input" value={form.className} onChange={set('className')} disabled={saving} placeholder="e.g. Class 10" />
             </div>
             <div>
               <label className="label">Percentage <span className="text-red-500">*</span></label>
